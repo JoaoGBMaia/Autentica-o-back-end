@@ -2,9 +2,25 @@ const fs = require("fs/promises");
 const path = require("path");
 const crypto = require("crypto");
 
-const dataDir = path.resolve(
-  process.env.DATA_DIR || process.env.RAILWAY_VOLUME_MOUNT_PATH || path.join(process.cwd(), "data")
-);
+function resolveDataDir() {
+  if (process.env.DATA_DIR) {
+    return path.resolve(process.env.DATA_DIR);
+  }
+
+  if (process.env.RAILWAY_VOLUME_MOUNT_PATH) {
+    return path.resolve(process.env.RAILWAY_VOLUME_MOUNT_PATH);
+  }
+
+  // Na Vercel, o filesystem da funcao e somente leitura. O /tmp funciona como
+  // area temporaria para a demonstracao continuar operando.
+  if (process.env.VERCEL) {
+    return path.join("/tmp", "auth-data");
+  }
+
+  return path.resolve(path.join(process.cwd(), "data"));
+}
+
+const dataDir = resolveDataDir();
 const usersFile = path.join(dataDir, "users.json");
 
 async function ensureUsersFile() {
