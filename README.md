@@ -28,6 +28,7 @@ src/
   routes/
   services/
   utils/
+public/
 ```
 
 ## Tecnologias
@@ -58,14 +59,28 @@ npm run dev
 - `http://localhost:3001`
 - `http://localhost:3001/health`
 
-## Deploy publico recomendado
+## Deploy publico
 
-Para este projeto, a melhor opcao atual e o Render.
+### Vercel
+
+Este projeto agora pode ser publicado na Vercel.
+
+Importante:
+
+- o front-end e a API funcionam normalmente na Vercel
+- os arquivos em `public/` sao servidos pela propria plataforma
+- os dados salvos em arquivo nao ficam persistentes entre execucoes como em um servidor com disco
+- para demonstracao, a API usa `/tmp/auth-data` quando detecta ambiente Vercel
+
+Se voce quiser persistencia real na Vercel, o proximo passo ideal e migrar usuarios e sessoes para banco de dados.
+
+### Render
+
+Se a prioridade for persistencia em arquivo sem banco de dados, o Render continua sendo a melhor opcao.
 
 Motivo:
 
 - esta API salva usuarios em arquivo local
-- plataformas com filesystem temporario podem perder os dados em restart ou deploy
 - o repositorio ja foi preparado com `render.yaml` e disco persistente
 
 ### Como publicar no Render
@@ -200,6 +215,8 @@ Voce tambem pode usar `auth.http` no VS Code com extensao REST Client.
 Os usuarios e sessoes ficam salvos em:
 
 - `data/users.json`
+
+Na Vercel, esse armazenamento e apenas temporario. Para producao, use um banco de dados.
 
 ## Proximos passos recomendados
 
