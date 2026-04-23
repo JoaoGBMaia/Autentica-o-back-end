@@ -2,7 +2,7 @@
 
 Este projeto foi desenvolvido por mim como uma base completa de autenticacao back-end com interface web integrada. A ideia foi construir uma aplicacao simples de executar, mas com recursos que se aproximam de um fluxo real de produto: cadastro, login, controle de sessao, refresh token, atualizacao de perfil e troca de senha.
 
-O objetivo aqui nao foi apenas fazer o login funcionar, mas organizar a aplicacao de forma clara, com separacao de responsabilidades, validacoes e uma estrutura que possa evoluir para banco de dados e ambiente de producao.
+O objetivo aqui nao foi apenas fazer o login funcionar, mas organizar a aplicacao de forma clara, com separacao de responsabilidades, validaçoes e uma estrutura que possa evoluir para banco de dados e ambiente de producao.
 
 ## Visao geral
 
