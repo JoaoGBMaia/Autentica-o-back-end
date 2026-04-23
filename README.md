@@ -1,23 +1,44 @@
-# Autenticacao de usuario - back-end completo
+# Sistema de Autenticacao de Usuarios
 
-API de autenticacao feita com Node.js e Express, pronta para estudo, portfolio ou base de projeto real.
+Este projeto foi desenvolvido por mim como uma base completa de autenticacao back-end com interface web integrada. A ideia foi construir uma aplicacao simples de executar, mas com recursos que se aproximam de um fluxo real de produto: cadastro, login, controle de sessao, refresh token, atualizacao de perfil e troca de senha.
 
-## O que ja esta pronto
+O objetivo aqui nao foi apenas fazer o login funcionar, mas organizar a aplicacao de forma clara, com separacao de responsabilidades, validacoes e uma estrutura que possa evoluir para banco de dados e ambiente de producao.
 
-- cadastro de usuario
-- login com `accessToken` e `refreshToken`
-- renovacao de sessao
-- logout por refresh token
-- logout da sessao atual
-- rota protegida de perfil
+## Visao geral
+
+- API REST com Node.js e Express
+- autenticacao com `JWT` e `refreshToken`
+- front-end integrado para cadastro, login e gerenciamento de conta
+- controle de sessoes ativas
 - atualizacao de perfil
-- alteracao de senha
-- listagem e revogacao de sessoes
-- validacao de entrada
-- senhas com hash usando `bcryptjs`
-- persistencia local em arquivo JSON
+- troca de senha com revogacao de sessao
+- persistencia local em arquivo JSON para facilitar testes e demonstracao
 
-## Estrutura
+## Demonstracao do fluxo
+
+O sistema permite:
+
+- criar uma conta
+- realizar login
+- acessar rota protegida
+- renovar a sessao com `refreshToken`
+- visualizar sessoes ativas
+- encerrar sessoes
+- atualizar nome e email
+- alterar senha com seguranca
+
+## Tecnologias utilizadas
+
+- Node.js
+- Express
+- JWT
+- bcryptjs
+- dotenv
+- HTML
+- CSS
+- JavaScript
+
+## Estrutura do projeto
 
 ```txt
 src/
@@ -29,79 +50,59 @@ src/
   services/
   utils/
 public/
+data/
 ```
 
-## Tecnologias
+## Arquitetura
 
-- Node.js
-- Express
-- JWT
-- bcryptjs
-- dotenv
+Organizei o projeto em camadas para deixar a manutencao mais simples:
 
-## Como rodar neste projeto
+- `controllers`: recebem a requisicao e retornam a resposta
+- `services`: concentram as regras de negocio da autenticacao
+- `repositories`: fazem a leitura e gravacao dos usuarios
+- `middleware`: tratam autenticacao, erros e rotas nao encontradas
+- `utils`: centralizam validacoes, tokens e erros customizados
 
-1. Instale o Node.js 18+.
+## Funcionalidades implementadas
+
+- cadastro de usuario
+- login com emissao de `accessToken` e `refreshToken`
+- refresh de sessao
+- logout por `refreshToken`
+- logout da sessao atual
+- perfil autenticado
+- atualizacao de perfil
+- alteracao de senha
+- listagem de sessoes
+- revogacao de sessoes
+- validacao de dados de entrada
+- hash de senha com `bcryptjs`
+
+## Como executar localmente
+
+1. Instale o Node.js 18 ou superior.
 2. Instale as dependencias:
 
 ```powershell
 npm install
 ```
 
-3. Inicie a API:
+3. Crie seu arquivo `.env` com base no arquivo `.env.example`.
+4. Inicie a aplicacao:
 
 ```powershell
 npm run dev
 ```
 
-4. Abra no navegador:
+5. Acesse:
 
 - `http://localhost:3001`
 - `http://localhost:3001/health`
-
-## Deploy publico
-
-### Vercel
-
-Este projeto agora pode ser publicado na Vercel.
-
-Importante:
-
-- o front-end e a API funcionam normalmente na Vercel
-- os arquivos em `public/` sao servidos pela propria plataforma
-- os dados salvos em arquivo nao ficam persistentes entre execucoes como em um servidor com disco
-- para demonstracao, a API usa `/tmp/auth-data` quando detecta ambiente Vercel
-
-Se voce quiser persistencia real na Vercel, o proximo passo ideal e migrar usuarios e sessoes para banco de dados.
-
-### Render
-
-Se a prioridade for persistencia em arquivo sem banco de dados, o Render continua sendo a melhor opcao.
-
-Motivo:
-
-- esta API salva usuarios em arquivo local
-- o repositorio ja foi preparado com `render.yaml` e disco persistente
-
-### Como publicar no Render
-
-1. Entre no painel do Render.
-2. Escolha `New +` > `Blueprint`.
-3. Conecte o repositorio do GitHub.
-4. Selecione o repositorio `JoaoGBMaia/Autentica-o-back-end`.
-5. Confirme a criacao do servico usando o `render.yaml`.
-6. Aguarde o build.
-7. O Render vai gerar uma URL publica `.onrender.com`.
-
-### Observacao importante
-
-- O `JWT_SECRET` sera gerado automaticamente pelo Blueprint.
-- O servico usa plano pago (`starter`) porque disco persistente nao funciona no plano `free`.
-- Os dados dos usuarios ficarao persistidos no disco montado em `/var/data`.
+- `http://localhost:3001/api`
 
 ## Variaveis de ambiente
 
-Use o arquivo `.env.example` como base:
+Exemplo:
 
 ```env
 PORT=3001
@@ -110,7 +111,7 @@ JWT_EXPIRES_IN=15m
 REFRESH_TOKEN_TTL_DAYS=7
 ```
 
-## Endpoints
+## Endpoints principais
 
 ### Publicos
 
@@ -130,9 +131,9 @@ REFRESH_TOKEN_TTL_DAYS=7
 - `POST /auth/logout-current`
 - `POST /auth/change-password`
 
-## Exemplos de body
+## Exemplos de requisicao
 
-### `POST /auth/register`
+### Cadastro
 
 ```json
 {
@@ -142,7 +143,7 @@ REFRESH_TOKEN_TTL_DAYS=7
 }
 ```
 
-### `POST /auth/login`
+### Login
 
 ```json
 {
@@ -151,7 +152,7 @@ REFRESH_TOKEN_TTL_DAYS=7
 }
 ```
 
-### `POST /auth/refresh`
+### Refresh de token
 
 ```json
 {
@@ -159,7 +160,7 @@ REFRESH_TOKEN_TTL_DAYS=7
 }
 ```
 
-### `PATCH /auth/me`
+### Atualizacao de perfil
 
 ```json
 {
@@ -167,7 +168,7 @@ REFRESH_TOKEN_TTL_DAYS=7
 }
 ```
 
-### `POST /auth/change-password`
+### Troca de senha
 
 ```json
 {
@@ -176,58 +177,72 @@ REFRESH_TOKEN_TTL_DAYS=7
 }
 ```
 
-### Rotas protegidas
-
-Envie no header:
+Para as rotas protegidas, envie:
 
 ```txt
 Authorization: Bearer SEU_ACCESS_TOKEN
 ```
 
-## Como testar rapido
+## Como testar
 
 ### Script PowerShell
 
-Rode:
+Criei um script para validar o fluxo principal da API:
 
 ```powershell
 .\test-api.ps1
 ```
 
-Esse script testa:
+Esse teste cobre:
 
-- health
-- register
-- me
-- sessions
-- update profile
-- refresh
-- change password
-- login com nova senha
+- health check
+- cadastro
+- login
+- consulta de perfil
+- sessoes
+- update de perfil
+- refresh token
+- troca de senha
+- novo login
 - logout
 
 ### Arquivo HTTP
 
-Voce tambem pode usar `auth.http` no VS Code com extensao REST Client.
+Tambem deixei um arquivo `auth.http` para testar as rotas no VS Code com a extensao REST Client.
 
 ## Persistencia
 
-Os usuarios e sessoes ficam salvos em:
+Atualmente os usuarios e sessoes sao salvos em `data/users.json`.
 
-- `data/users.json`
+Essa escolha foi intencional para deixar o projeto simples de rodar e facil de avaliar. Para producao, o caminho ideal e migrar para um banco como PostgreSQL ou MongoDB.
 
-Na Vercel, esse armazenamento e apenas temporario. Para producao, use um banco de dados.
+## Deploy
 
-## Proximos passos recomendados
+### Vercel
 
-- migrar de JSON para PostgreSQL
-- adicionar confirmacao de email
-- adicionar recuperacao de senha
-- adicionar roles como `admin` e `user`
-- adicionar testes automatizados com Jest ou Vitest
-- adicionar rate limit e helmet
+O projeto foi ajustado para funcionar na Vercel com front-end e API no mesmo deploy.
 
-## Observacoes
+Observacao importante:
 
-- Esta base e excelente para aprendizado e MVP.
-- Para producao, prefira banco de dados real e cookies `httpOnly` quando houver frontend web.
+- na Vercel, o armazenamento em arquivo e temporario
+- para demonstracao, a aplicacao usa `/tmp/auth-data` quando detecta esse ambiente
+- se a ideia for manter usuarios reais e dados persistentes, e melhor usar banco de dados
+
+### Render
+
+Tambem preparei o projeto para Render usando `render.yaml`, que e uma opcao melhor quando a prioridade e persistencia em disco sem banco de dados logo de inicio.
+
+## Evolucoes que eu faria na proxima versao
+
+- migracao para PostgreSQL com Prisma
+- cookies `httpOnly` para sessao web
+- confirmacao de email
+- recuperacao de senha
+- rate limit
+- `helmet`
+- testes automatizados com Jest ou Vitest
+- perfis de acesso como `admin` e `user`
+
+## Consideracoes finais
+
+Esse projeto representa bem a forma como eu gosto de construir back-end: com preocupacao em organizacao, seguranca basica, clareza de fluxo e espaco para evolucao. Ele funciona como estudo, MVP e tambem como uma boa base para ampliar para um sistema mais robusto.
