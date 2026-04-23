@@ -2,7 +2,9 @@ const fs = require("fs/promises");
 const path = require("path");
 const crypto = require("crypto");
 
-const dataDir = path.join(process.cwd(), "data");
+const dataDir = path.resolve(
+  process.env.DATA_DIR || process.env.RAILWAY_VOLUME_MOUNT_PATH || path.join(process.cwd(), "data")
+);
 const usersFile = path.join(dataDir, "users.json");
 
 async function ensureUsersFile() {
