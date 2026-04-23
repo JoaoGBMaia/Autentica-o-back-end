@@ -1,0 +1,80 @@
+@baseUrl = http://127.0.0.1:3001
+@accessToken = cole-o-access-token-aqui
+@refreshToken = cole-o-refresh-token-aqui
+@sessionId = cole-o-session-id-aqui
+
+### Home
+GET {{baseUrl}}/
+
+### Health
+GET {{baseUrl}}/health
+
+### Register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Gabriel",
+  "email": "gabriel@example.com",
+  "password": "123456"
+}
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "gabriel@example.com",
+  "password": "123456"
+}
+
+### Me
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{accessToken}}
+
+### Update Profile
+PATCH {{baseUrl}}/auth/me
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Gabriel Atualizado"
+}
+
+### Sessions
+GET {{baseUrl}}/auth/sessions
+Authorization: Bearer {{accessToken}}
+
+### Refresh
+POST {{baseUrl}}/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+### Logout
+POST {{baseUrl}}/auth/logout
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+### Logout Current Session
+POST {{baseUrl}}/auth/logout-current
+Authorization: Bearer {{accessToken}}
+
+### Revoke Session
+DELETE {{baseUrl}}/auth/sessions/{{sessionId}}
+Authorization: Bearer {{accessToken}}
+
+### Change Password
+POST {{baseUrl}}/auth/change-password
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "currentPassword": "123456",
+  "newPassword": "654321"
+}
