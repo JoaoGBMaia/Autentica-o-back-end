@@ -58,6 +58,32 @@ npm run dev
 - `http://localhost:3001`
 - `http://localhost:3001/health`
 
+## Deploy publico recomendado
+
+Para este projeto, a melhor opcao atual e o Render.
+
+Motivo:
+
+- esta API salva usuarios em arquivo local
+- plataformas com filesystem temporario podem perder os dados em restart ou deploy
+- o repositorio ja foi preparado com `render.yaml` e disco persistente
+
+### Como publicar no Render
+
+1. Entre no painel do Render.
+2. Escolha `New +` > `Blueprint`.
+3. Conecte o repositorio do GitHub.
+4. Selecione o repositorio `JoaoGBMaia/Autentica-o-back-end`.
+5. Confirme a criacao do servico usando o `render.yaml`.
+6. Aguarde o build.
+7. O Render vai gerar uma URL publica `.onrender.com`.
+
+### Observacao importante
+
+- O `JWT_SECRET` sera gerado automaticamente pelo Blueprint.
+- O servico usa plano pago (`starter`) porque disco persistente nao funciona no plano `free`.
+- Os dados dos usuarios ficarao persistidos no disco montado em `/var/data`.
+
 ## Variaveis de ambiente
 
 Use o arquivo `.env.example` como base:
