@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AuthFlow | Autenticacao de Usuario</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <div class="ambient ambient-one"></div>
+      <div class="ambient ambient-two"></div>
+
+      <main class="layout">
+        <section class="hero-panel">
+          <div class="brand-row">
+            <div class="brand-mark">A</div>
+            <div>
+              <p class="eyebrow">AuthFlow Suite</p>
+              <h1>Seu login e senha funcionando em uma interface real.</h1>
+            </div>
+          </div>
+
+          <p class="hero-copy">
+            Cadastro, login, renovacao de token, perfil autenticado, troca de
+            senha e gerenciamento de sessoes conectados ao seu back-end.
+          </p>
+
+          <div class="feature-grid">
+            <article class="feature-card">
+              <span class="feature-kicker">Seguranca</span>
+              <strong>JWT com refresh token</strong>
+              <p>Sessoes persistidas e logout controlado pelo navegador.</p>
+            </article>
+
+            <article class="feature-card">
+              <span class="feature-kicker">Conta</span>
+              <strong>Perfil editavel</strong>
+              <p>Atualize nome, email e senha sem sair da interface.</p>
+            </article>
+
+            <article class="feature-card">
+              <span class="feature-kicker">Controle</span>
+              <strong>Gerencie sessoes</strong>
+              <p>Veja sessoes ativas, renove token e encerre acessos.</p>
+            </article>
+          </div>
+
+          <div class="status-ribbon">
+            <span class="status-pill">
+              <span class="status-dot"></span>
+              API integrada
+            </span>
+            <span class="status-meta" id="apiStatusLabel">Verificando conexao...</span>
+          </div>
+        </section>
+
+        <section class="app-panel">
+          <header class="panel-header">
+            <div>
+              <p class="eyebrow">Painel de acesso</p>
+              <h2>Entrar ou criar conta</h2>
+            </div>
+
+            <div class="view-toggle" role="tablist" aria-label="Modo de autenticacao">
+              <button class="toggle-btn active" data-tab-target="login" type="button">Entrar</button>
+              <button class="toggle-btn" data-tab-target="register" type="button">Criar conta</button>
+            </div>
+          </header>
+
+          <div class="forms-grid">
+            <section class="form-card tab-panel active" data-tab-panel="login">
+              <h3>Login</h3>
+              <form id="loginForm" class="stack-form">
+                <label>
+                  <span>Email</span>
+                  <input type="email" name="email" placeholder="voce@email.com" required />
+                </label>
+
+                <label>
+                  <span>Senha</span>
+                  <input type="password" name="password" placeholder="Sua senha" required />
+                </label>
+
+                <button class="primary-btn" type="submit">Entrar na conta</button>
+              </form>
+            </section>
+
+            <section class="form-card tab-panel" data-tab-panel="register">
+              <h3>Criar conta</h3>
+              <form id="registerForm" class="stack-form">
+                <label>
+                  <span>Nome</span>
+                  <input type="text" name="name" placeholder="Seu nome" required />
+                </label>
+
+                <label>
+                  <span>Email</span>
+                  <input type="email" name="email" placeholder="voce@email.com" required />
+                </label>
+
+                <label>
+                  <span>Senha</span>
+                  <input type="password" name="password" placeholder="Minimo de 6 caracteres" required />
+                </label>
+
+                <button class="primary-btn" type="submit">Criar conta</button>
+              </form>
+            </section>
+          </div>
+
+          <section class="dashboard-card">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Sessao atual</p>
+                <h3>Conta autenticada</h3>
+              </div>
+              <button class="ghost-btn" id="refreshSessionBtn" type="button">Renovar token</button>
+            </div>
+
+            <div class="profile-summary" id="profileSummary">
+              <div class="empty-state">
+                Faca login para ver seu perfil e gerenciar suas sessoes.
+              </div>
+            </div>
+          </section>
+
+          <section class="dashboard-card dashboard-actions">
+            <article class="mini-card">
+              <div class="section-heading compact">
+                <h3>Editar perfil</h3>
+              </div>
+              <form id="profileForm" class="stack-form small">
+                <label>
+                  <span>Nome</span>
+                  <input type="text" name="name" placeholder="Novo nome" />
+                </label>
+                <label>
+                  <span>Email</span>
+                  <input type="email" name="email" placeholder="Novo email" />
+                </label>
+                <button class="secondary-btn" type="submit">Salvar perfil</button>
+              </form>
+            </article>
+
+            <article class="mini-card">
+              <div class="section-heading compact">
+                <h3>Trocar senha</h3>
+              </div>
+              <form id="passwordForm" class="stack-form small">
+                <label>
+                  <span>Senha atual</span>
+                  <input type="password" name="currentPassword" placeholder="Senha atual" />
+                </label>
+                <label>
+                  <span>Nova senha</span>
+                  <input type="password" name="newPassword" placeholder="Nova senha" />
+                </label>
+                <button class="secondary-btn" type="submit">Alterar senha</button>
+              </form>
+            </article>
+          </section>
+
+          <section class="dashboard-card">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Acessos</p>
+                <h3>Sessoes abertas</h3>
+              </div>
+              <button class="ghost-btn" id="loadSessionsBtn" type="button">Atualizar lista</button>
+            </div>
+
+            <div id="sessionsList" class="session-list">
+              <div class="empty-state">Nenhuma sessao carregada ainda.</div>
+            </div>
+          </section>
+
+          <section class="dashboard-card">
+            <div class="action-row">
+              <button class="ghost-btn danger" id="logoutCurrentBtn" type="button">Sair da sessao atual</button>
+              <button class="primary-btn alt" id="logoutBtn" type="button">Logout com refresh token</button>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <aside class="toast" id="toast"></aside>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
